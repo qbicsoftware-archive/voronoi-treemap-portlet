@@ -15,7 +15,7 @@
 
 		<init-param>
 			<name>UI</name>
-			<value>life.qbic.MyPortletUI</value>
+			<value>life.qbic.interactive_voronoi_treemap.Interactive_voronoi_treemapUI</value>
 		</init-param>
 
 		<init-param>
