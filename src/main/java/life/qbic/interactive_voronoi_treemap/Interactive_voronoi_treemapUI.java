@@ -11,14 +11,12 @@ import java.io.OutputStream;
 
 import javax.servlet.annotation.WebServlet;
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.BrowserFrame;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ProgressBar;
@@ -31,7 +29,6 @@ import com.vaadin.ui.Upload.SucceededListener;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-@Theme("interactive_voronoi_treemap")
 public class Interactive_voronoi_treemapUI extends UI {
 
     final String resourcePath = "lib/VoronoiTreemapFromTable.jar";
@@ -137,7 +134,7 @@ public class Interactive_voronoi_treemapUI extends UI {
 
     public void createTreemap(final Runnable ready) {
         Thread t = new Thread(() -> {
-            String cmd = "java -jar " + resourcePath + "VoronoiTreemapFromTable.jar "
+            String cmd = "java -jar " + resourcePath + "VoronoiTreemapFromTable.jar " //TODO after having tested it: resource path alone should be sufficient?
                     + tempFile.getAbsolutePath() + " ";
             String selected = "null";
             if (!select.isEmpty())
