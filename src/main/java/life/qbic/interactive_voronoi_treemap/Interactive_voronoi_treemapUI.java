@@ -31,7 +31,7 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("serial")
 public class Interactive_voronoi_treemapUI extends UI {
 
-    final String resourcePath = "lib/VoronoiTreemapFromTable.jar";
+    final String resourcePath = "lib/";
 
     TwinColSelect select = new TwinColSelect("Select column names in hierarchical order");
     Button button = new Button("Create Treemap");
@@ -66,7 +66,7 @@ public class Interactive_voronoi_treemapUI extends UI {
         setContent(main);
     }
 
-    private void configureComponents(VerticalLayout l, HorizontalLayout m) {
+    private void configureComponents(VerticalLayout l, HorizontalLayout horizontalLayout) {
         uploadFile.addSucceededListener(receiver);
 
         select.addValueChangeListener(event -> label_selection.setCaption("Selected: " + event.getProperty().getValue()));
@@ -79,7 +79,7 @@ public class Interactive_voronoi_treemapUI extends UI {
             load.setVisible(true);
 
             createTreemap(() -> {
-                m.addComponent(createTreemapFrame());
+                horizontalLayout.addComponent(createTreemapFrame());
                 load.setVisible(false);
                 tempFile.delete();
             });
@@ -124,7 +124,7 @@ public class Interactive_voronoi_treemapUI extends UI {
     }
 
     private VerticalLayout createTreemapFrame() {
-        BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File(resourcePath + "VoroTreemap.html")));
+        BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File("lib/VoroTreemap.html")));
 
         browser.setWidth("1500px");
         browser.setHeight("1000px");
@@ -134,7 +134,7 @@ public class Interactive_voronoi_treemapUI extends UI {
 
     public void createTreemap(final Runnable ready) {
         Thread t = new Thread(() -> {
-            String cmd = "java -jar " + resourcePath + "VoronoiTreemapFromTable.jar " //TODO after having tested it: resource path alone should be sufficient?
+            String cmd = "java -jar " + resourcePath + "VoronoiTreemapFromTable.jar"
                     + tempFile.getAbsolutePath() + " ";
             String selected = "null";
             if (!select.isEmpty())
