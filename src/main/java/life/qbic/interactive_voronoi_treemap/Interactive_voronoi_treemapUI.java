@@ -46,10 +46,6 @@ public class Interactive_voronoi_treemapUI extends UI {
     FileReceiver receiver = new FileReceiver();
     Upload uploadFile = new Upload("Upload file to be mapped", receiver);
 
-    @WebServlet(value = "/*", asyncSupported = true)
-    @VaadinServletConfiguration(productionMode = false, ui = Interactive_voronoi_treemapUI.class)
-    public static class Servlet extends VaadinServlet {
-    }
 
     @Override
     protected void init(VaadinRequest request) {
