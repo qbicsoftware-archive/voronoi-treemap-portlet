@@ -7,9 +7,9 @@
 	version="2.0">
 
 	<portlet>
-		<description>This is a template of a QBiC portlet</description>
-		<portlet-name>Portlet Template</portlet-name>
-		<display-name>Portlet Template</display-name>
+		<description>Voronoi Treemap GUI Implementation by Mathias Raffeiner</description>
+		<portlet-name>Voronoi Treemap Portlet</portlet-name>
+		<display-name>Voronoi Treemap GUI</display-name>
 
 		<portlet-class>com.vaadin.server.VaadinPortlet</portlet-class>
 
