@@ -271,7 +271,6 @@
 				<version>${jetty.plugin.version}</version>
 				<configuration>
 					<scanIntervalSeconds>2</scanIntervalSeconds>
-					<useProvidedScope>true</useProvidedScope>
 				</configuration>
 			</plugin>
 
