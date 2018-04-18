@@ -3,7 +3,7 @@
       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 	<display-name>Voronoi Treemap GUI</display-name>
 	<servlet>
-		<servlet-name>Voronoi Treemap GU</servlet-name>
+		<servlet-name>Voronoi Treemap GUI</servlet-name>
 		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
 
 		<init-param>
@@ -14,7 +14,7 @@
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>Voronoi Treemap GU</servlet-name>
+		<servlet-name>Voronoi Treemap GUI</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 </web-app>
