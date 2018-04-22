@@ -9,12 +9,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-import javax.servlet.annotation.WebServlet;
 
-import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.BrowserFrame;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
@@ -30,8 +27,6 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class Interactive_voronoi_treemapUI extends UI {
-
-    final String resourcePath = "lib/";
 
     TwinColSelect select = new TwinColSelect("Select column names in hierarchical order");
     Button button = new Button("Create Treemap");
@@ -120,7 +115,7 @@ public class Interactive_voronoi_treemapUI extends UI {
     }
 
     private VerticalLayout createTreemapFrame() {
-        BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File("lib/VoroTreemap.html")));
+        BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File("src/main/java/lib/VoroTreemap.html")));
 
         browser.setWidth("1500px");
         browser.setHeight("1000px");
@@ -130,8 +125,7 @@ public class Interactive_voronoi_treemapUI extends UI {
 
     public void createTreemap(final Runnable ready) {
         Thread t = new Thread(() -> {
-            String cmd = "java -jar " + resourcePath + "VoronoiTreemapFromTable.jar"
-                    + tempFile.getAbsolutePath() + " ";
+            String cmd = "java -jar " + "src/main/java/lib/VoronoiTreemapFromTable.jar " + tempFile.getAbsolutePath() + " ";
             String selected = "null";
             if (!select.isEmpty())
                 selected = select.getValue().toString();
@@ -141,6 +135,7 @@ public class Interactive_voronoi_treemapUI extends UI {
                     cmd += c;
                 }
             }
+
             try {
                 Process p = Runtime.getRuntime().exec(cmd);
                 InputStream in = p.getInputStream();
