@@ -115,7 +115,7 @@ public class Interactive_voronoi_treemapUI extends UI {
     }
 
     private VerticalLayout createTreemapFrame() {
-        BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File("src/main/java/lib/VoroTreemap.html")));
+        BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File("/tmp/VoroTreemap.html")));
 
         browser.setWidth("1500px");
         browser.setHeight("1000px");
@@ -125,7 +125,7 @@ public class Interactive_voronoi_treemapUI extends UI {
 
     public void createTreemap(final Runnable ready) {
         Thread t = new Thread(() -> {
-            String cmd = "java -jar " + "src/main/java/lib/VoronoiTreemapFromTable.jar " + tempFile.getAbsolutePath() + " ";
+            String cmd = "java -jar " + "src/main/java/lib/voronoi-treemaps-CLI.jar " + "-f " +  tempFile.getAbsolutePath() + " " + "-c ";
             String selected = "null";
             if (!select.isEmpty())
                 selected = select.getValue().toString();
@@ -135,6 +135,8 @@ public class Interactive_voronoi_treemapUI extends UI {
                     cmd += c;
                 }
             }
+
+            System.out.println(cmd);
 
             try {
                 Process p = Runtime.getRuntime().exec(cmd);
