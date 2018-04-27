@@ -5,9 +5,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 
 import com.vaadin.server.FileResource;
@@ -24,6 +23,7 @@ import com.vaadin.ui.Upload.Receiver;
 import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.Upload.SucceededListener;
 import com.vaadin.ui.VerticalLayout;
+import treemaps_CLI.VoronoiTreemapFromTable;
 
 @SuppressWarnings("serial")
 public class Interactive_voronoi_treemapUI extends UI {
@@ -39,6 +39,7 @@ public class Interactive_voronoi_treemapUI extends UI {
 
     File tempFile;
     private final String voroTreemapOutputFilePath = "/tmp/VoroTreemap.html";
+
     FileReceiver receiver = new FileReceiver();
     Upload uploadFile = new Upload("Upload file to be mapped", receiver);
 
@@ -124,33 +125,47 @@ public class Interactive_voronoi_treemapUI extends UI {
         return new VerticalLayout(browser);
     }
 
+    /**
+     * creates the Treemap
+     * saves it in the voroTreemapOutputFilePath specified above
+     *
+     * @param ready
+     */
     public void createTreemap(final Runnable ready) {
-        //if you want to specify another output path add the -o option and the filepath at the final cmd string
-        //do not forget to adapt the voroTreemapOutputFilepath
         Thread t = new Thread(() -> {
-            String cmd = "java -jar " + "src/main/java/lib/voronoi-treemaps-CLI.jar " + "-f " +  tempFile.getAbsolutePath() + " " + "-c ";
-            String selected = "null";
+            String columns = "";
+
             if (!select.isEmpty())
-                selected = select.getValue().toString();
-            if (selected != null) {
-                String[] colNames = selected.substring(1, selected.length() - 1).split(",");
-                for (String c : colNames) {
-                    cmd += c;
-                }
+                columns = select.getValue().toString();
+
+            columns = columns.substring(1, columns.length() - 1); //remove brackets
+
+            String[] allColumns = columns.split(",");
+            for (int i = 0; i < allColumns.length; i++) {
+                allColumns[i] = allColumns[i].trim();
             }
 
+            // all parameter identifiers + filePaths = 5
+            int inputSize = 5 + allColumns.length;
+            String[] input = new String[inputSize];
+            input[0] = "-f";
+            input[1] = tempFile.getAbsolutePath();
+            input[2] = "-c";
+            input[input.length - 2] = "-o";
+            input[input.length - 1] = voroTreemapOutputFilePath;
+
+            //insert all columns at their respective index
+            for (int i = 0; i < allColumns.length; i++) {
+                input[i + 3] = allColumns[i];
+            }
+
+            //create the treemap
             try {
-                Process p = Runtime.getRuntime().exec(cmd);
-                InputStream in = p.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(in));
-                for (String line = br.readLine(); line != null; line = br.readLine()) {
-                    System.out.println(line);
-                }
-                br.close();
-                p.waitFor();
-            } catch (Exception e) {
+                VoronoiTreemapFromTable.main(input);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+
             UI.getCurrent().access(ready);
             UI.getCurrent().setPollInterval(-1);
         });
