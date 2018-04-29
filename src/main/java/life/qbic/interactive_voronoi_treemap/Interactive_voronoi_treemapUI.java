@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 
 
 import com.vaadin.server.FileResource;
@@ -117,7 +116,8 @@ public class Interactive_voronoi_treemapUI extends UI {
     }
 
     private VerticalLayout createTreemapFrame() {
-        BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File(voroTreemapOutputFilePath)));
+        System.out.println(VoronoiTreemapFromTable.getOutputFilePath());
+        BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File(VoronoiTreemapFromTable.getOutputFilePath())));
 
         browser.setWidth("1500px");
         browser.setHeight("1000px");
@@ -127,7 +127,9 @@ public class Interactive_voronoi_treemapUI extends UI {
 
     /**
      * creates the Treemap
-     * saves it in the voroTreemapOutputFilePath specified above
+     * saves it automatically in /tmp
+     * If you do NOT want it to be saved and deleted in /tmp
+     * use the -o option and change the VoroTreemapOutputFilePath and remove the -t option
      *
      * @param ready
      */
@@ -145,14 +147,16 @@ public class Interactive_voronoi_treemapUI extends UI {
                 allColumns[i] = allColumns[i].trim();
             }
 
-            // all parameter identifiers + filePaths = 5
-            int inputSize = 5 + allColumns.length;
+            // all parameter identifiers + filePaths + temporary = 6
+            // all parameter identifiers + temporary = 4
+            int inputSize = 4 + allColumns.length;
             String[] input = new String[inputSize];
             input[0] = "-f";
             input[1] = tempFile.getAbsolutePath();
             input[2] = "-c";
-            input[input.length - 2] = "-o";
-            input[input.length - 1] = voroTreemapOutputFilePath;
+            //input[input.length - 3] = "-o";
+            //input[input.length - 2] = voroTreemapOutputFilePath;
+            input[input.length - 1] = "-t";
 
             //insert all columns at their respective index
             for (int i = 0; i < allColumns.length; i++) {
