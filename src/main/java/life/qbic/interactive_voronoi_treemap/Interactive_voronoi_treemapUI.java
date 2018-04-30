@@ -26,7 +26,6 @@ import life.qbic.voronoi.VoronoiTreemapStartup;
 
 @SuppressWarnings("serial")
 public class Interactive_voronoi_treemapUI extends UI {
-
     TwinColSelect select = new TwinColSelect("Select column names in hierarchical order");
     Button button = new Button("Create Treemap");
 
