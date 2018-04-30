@@ -22,7 +22,7 @@ import com.vaadin.ui.Upload.Receiver;
 import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.Upload.SucceededListener;
 import com.vaadin.ui.VerticalLayout;
-import treemaps_CLI.VoronoiTreemapFromTable;
+import life.qbic.voronoi.VoronoiTreemapStartup;
 
 @SuppressWarnings("serial")
 public class Interactive_voronoi_treemapUI extends UI {
@@ -113,7 +113,7 @@ public class Interactive_voronoi_treemapUI extends UI {
     }
 
     private VerticalLayout createTreemapFrame() {
-        BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File(VoronoiTreemapFromTable.getOutputFilePath())));
+        BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File(VoronoiTreemapStartup.getOutputFilePath())));
 
         browser.setWidth("1500px");
         browser.setHeight("1000px");
@@ -162,8 +162,7 @@ public class Interactive_voronoi_treemapUI extends UI {
 
             //create the treemap
             try {
-                VoronoiTreemapFromTable.parseCommandlineParameters(input);
-                VoronoiTreemapFromTable.startTreemapCreation();
+                VoronoiTreemapStartup.main(input);
             } catch (IOException e) {
                 e.printStackTrace();
             }
