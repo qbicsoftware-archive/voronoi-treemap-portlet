@@ -28,7 +28,7 @@
 			<url>http://maven.vaadin.com/vaadin-addons</url>
 		</repository>
 		<repository>
-			<id>nexus-snap</id>
+			<id>nexus-snapshots</id>
 			<name>qbic snapshots</name>
 			<url>https://qbic-repo.am10.uni-tuebingen.de/repository/maven-snapshots</url>
 		</repository>
@@ -48,7 +48,7 @@
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>nexus-snap</id>
+			<id>nexus-snapshots</id>
 			<name>QBiC Snapshots</name>
 			<url>https://qbic-repo.am10.uni-tuebingen.de/repository/maven-snapshots</url>
 		</snapshotRepository>
@@ -166,7 +166,7 @@
 		<dependency>
 			<groupId>life.qbic</groupId>
 			<artifactId>voronoi-treemaps-cli</artifactId>
-			<version>1.0.2-SNAPSHOT</version>
+			<version>1.0.3-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

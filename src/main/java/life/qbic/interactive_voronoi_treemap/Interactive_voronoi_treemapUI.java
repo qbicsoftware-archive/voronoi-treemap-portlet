@@ -37,8 +37,6 @@ public class Interactive_voronoi_treemapUI extends UI {
     Label label_err = new Label();
 
     File tempFile;
-    private final String voroTreemapOutputFilePath = "/tmp/VoroTreemap.html";
-
     FileReceiver receiver = new FileReceiver();
     Upload uploadFile = new Upload("Upload file to be mapped", receiver);
 
@@ -80,7 +78,6 @@ public class Interactive_voronoi_treemapUI extends UI {
     }
 
     class FileReceiver implements Receiver, SucceededListener {
-
         @Override
         public OutputStream receiveUpload(String filename, String mimeType) {
             try {
@@ -116,7 +113,6 @@ public class Interactive_voronoi_treemapUI extends UI {
     }
 
     private VerticalLayout createTreemapFrame() {
-        System.out.println(VoronoiTreemapFromTable.getOutputFilePath());
         BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File(VoronoiTreemapFromTable.getOutputFilePath())));
 
         browser.setWidth("1500px");
@@ -130,6 +126,7 @@ public class Interactive_voronoi_treemapUI extends UI {
      * saves it automatically in /tmp
      * If you do NOT want it to be saved and deleted in /tmp
      * use the -o option and change the VoroTreemapOutputFilePath and remove the -t option
+     * resize the array accordingly
      *
      * @param ready
      */
@@ -165,7 +162,8 @@ public class Interactive_voronoi_treemapUI extends UI {
 
             //create the treemap
             try {
-                VoronoiTreemapFromTable.main(input);
+                VoronoiTreemapFromTable.parseCommandlineParameters(input);
+                VoronoiTreemapFromTable.startTreemapCreation();
             } catch (IOException e) {
                 e.printStackTrace();
             }
