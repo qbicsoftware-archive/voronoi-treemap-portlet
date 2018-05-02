@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import com.vaadin.server.FileResource;
@@ -26,6 +28,8 @@ import life.qbic.voronoi.VoronoiTreemapStartup;
 
 @SuppressWarnings("serial")
 public class Interactive_voronoi_treemapUI extends UI {
+    private static final Logger LOG = LogManager.getLogger(Interactive_voronoi_treemapUI.class);
+
     TwinColSelect select = new TwinColSelect("Select column names in hierarchical order");
     Button button = new Button("Create Treemap");
 
@@ -42,6 +46,7 @@ public class Interactive_voronoi_treemapUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
+        LOG.info("Initializing layout");
         HorizontalLayout main = new HorizontalLayout();
         VerticalLayout left = new VerticalLayout();
         configureComponents(left, main);
@@ -53,9 +58,11 @@ public class Interactive_voronoi_treemapUI extends UI {
 
         main.addComponent(left);
         setContent(main);
+        LOG.info("Finished layouting");
     }
 
     private void configureComponents(VerticalLayout l, HorizontalLayout horizontalLayout) {
+        LOG.info("Configuring components");
         uploadFile.addSucceededListener(receiver);
 
         select.addValueChangeListener(event -> label_selection.setCaption("Selected: " + event.getProperty().getValue()));
@@ -74,16 +81,18 @@ public class Interactive_voronoi_treemapUI extends UI {
             });
 
         });
+        LOG.info("Finished configuring components");
     }
 
     class FileReceiver implements Receiver, SucceededListener {
         @Override
         public OutputStream receiveUpload(String filename, String mimeType) {
             try {
+                LOG.info("Creating temporary file for the uploaded file");
                 tempFile = File.createTempFile("temp", ".csv");
                 return new FileOutputStream(tempFile);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Unable to receive uploaded file!");
                 return null;
             }
         }
@@ -107,11 +116,12 @@ public class Interactive_voronoi_treemapUI extends UI {
                 select.addItem(c);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.info("Parsing the columns of the uploaded file has failed! " + e.getMessage());
         }
     }
 
     private VerticalLayout createTreemapFrame() {
+        LOG.info("Displaying treemap from: " + VoronoiTreemapStartup.getOutputFilePath());
         BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File(VoronoiTreemapStartup.getOutputFilePath())));
 
         browser.setWidth("1500px");
@@ -131,6 +141,8 @@ public class Interactive_voronoi_treemapUI extends UI {
      */
     public void createTreemap(final Runnable ready) {
         Thread t = new Thread(() -> {
+            LOG.info("Creating treemap");
+            LOG.info("Setting up treemap algorithm options");
             String columns = "";
 
             if (!select.isEmpty())
@@ -161,9 +173,10 @@ public class Interactive_voronoi_treemapUI extends UI {
 
             //create the treemap
             try {
+                LOG.info("Starting Treemap generation algorithm in the portlet");
                 VoronoiTreemapStartup.main(input);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Creation of Treemap has failed! " + e.getMessage());
             }
 
             UI.getCurrent().access(ready);
