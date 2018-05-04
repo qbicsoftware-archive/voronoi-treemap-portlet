@@ -174,7 +174,7 @@ public class Interactive_voronoi_treemapUI extends UI {
             //create the treemap
             try {
                 LOG.info("Starting Treemap generation algorithm in the portlet");
-                VoronoiTreemapStartup.main(input);
+                VoronoiTreemapStartup.createTreemap(input);
             } catch (IOException e) {
                 LOG.error("Creation of Treemap has failed! " + e.getMessage());
             }

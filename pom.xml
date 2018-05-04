@@ -75,9 +75,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-
-
 	<dependencies>
 
 		<!-- Vaadin dependencies -->
@@ -127,7 +124,7 @@
 			<artifactId>portal-service</artifactId>
 			<version>${liferay.version}</version>
 			<!-- compile for local testing - provided for portlet -->
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -135,7 +132,7 @@
 			<artifactId>util-java</artifactId>
 			<version>${liferay.version}</version>
 			<!-- compile for local testing - provided for portlet -->
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -166,7 +163,7 @@
 		<dependency>
 			<groupId>life.qbic</groupId>
 			<artifactId>voronoi-treemaps-cli</artifactId>
-			<version>1.0.6-SNAPSHOT</version>
+			<version>1.0.7-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
@@ -275,8 +272,7 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jetty.plugin.version}</version>
 				<configuration>
-					<scanIntervalSeconds>2</scanIntervalSeconds>
-					<useProvidedScope>true</useProvidedScope>
+					<scanIntervalSeconds>0</scanIntervalSeconds>
 				</configuration>
 			</plugin>
 
