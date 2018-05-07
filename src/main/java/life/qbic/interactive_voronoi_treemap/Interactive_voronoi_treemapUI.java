@@ -57,6 +57,11 @@ public class Interactive_voronoi_treemapUI extends UI {
         left.addComponent(label_selection);
         left.addComponent(new Label("1.1.0-SNAPSHOT"));
 
+        Button loadResult = new Button("Load created Treemap");
+        loadResult.addClickListener(event -> {
+            main.addComponent(createTreemapFrame());
+        });
+
         main.addComponent(left);
         setContent(main);
         LOG.info("Finished layouting");
