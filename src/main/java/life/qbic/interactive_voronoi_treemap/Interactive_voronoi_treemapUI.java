@@ -55,7 +55,7 @@ public class Interactive_voronoi_treemapUI extends UI {
         left.addComponent(select);
         left.addComponent(new HorizontalLayout(button, load));
         left.addComponent(label_selection);
-        left.addComponent(new Label("1.1.4-SNAPSHOT"));
+        left.addComponent(new Label("1.1.5-SNAPSHOT"));
 
         main.addComponent(left);
         setContent(main);
