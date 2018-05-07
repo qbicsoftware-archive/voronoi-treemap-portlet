@@ -30,8 +30,8 @@
 
 
 		<portlet-info>
-			<title>Portlet Template</title>
-			<short-title>Portlet Template</short-title>
+			<title>Voronoi Treemap Portlet</title>
+			<short-title>Voronoi Treemap Portlet</short-title>
 			<keywords>Vaadin 7</keywords>
 		</portlet-info>
 
