@@ -55,6 +55,7 @@ public class Interactive_voronoi_treemapUI extends UI {
         left.addComponent(select);
         left.addComponent(new HorizontalLayout(button, load));
         left.addComponent(label_selection);
+        left.addComponent(new Label("1.1.0-SNAPSHOT"));
 
         main.addComponent(left);
         setContent(main);
@@ -140,6 +141,7 @@ public class Interactive_voronoi_treemapUI extends UI {
      * @param ready
      */
     public void createTreemap(final Runnable ready) {
+        LOG.info("Starting algorithm thread");
         Thread t = new Thread(() -> {
             LOG.info("Creating treemap");
             LOG.info("Setting up treemap algorithm options");
@@ -184,6 +186,14 @@ public class Interactive_voronoi_treemapUI extends UI {
         });
         t.start();
         UI.getCurrent().setPollInterval(200);
+
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            LOG.info("Unable to end algorithm computation thread: " + e.getMessage());
+        }
+
+        LOG.info("Algorithm thread is alive: " + t.isAlive());
     }
 
 }
