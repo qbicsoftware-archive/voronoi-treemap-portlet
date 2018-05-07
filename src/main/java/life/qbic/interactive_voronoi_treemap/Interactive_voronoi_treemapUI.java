@@ -55,7 +55,7 @@ public class Interactive_voronoi_treemapUI extends UI {
         left.addComponent(select);
         left.addComponent(new HorizontalLayout(button, load));
         left.addComponent(label_selection);
-        left.addComponent(new Label("1.1.3-SNAPSHOT"));
+        left.addComponent(new Label("1.1.4-SNAPSHOT"));
 
         main.addComponent(left);
         setContent(main);
@@ -123,12 +123,14 @@ public class Interactive_voronoi_treemapUI extends UI {
 
     private VerticalLayout createTreemapFrame() {
         LOG.info("Displaying treemap from: " + VoronoiTreemapStartup.getOutputFilePath());
-        BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File(VoronoiTreemapStartup.getOutputFilePath())));
+        File testFile = new File(Interactive_voronoi_treemapUI.class.getClassLoader().getResource("voroTreemap123071972158065013.html").getFile());
+        BrowserFrame browserStuff = new BrowserFrame("blabla", new FileResource(testFile));
+        //BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File(VoronoiTreemapStartup.getOutputFilePath())));
 
-        browser.setWidth("1500px");
-        browser.setHeight("1000px");
+        browserStuff.setWidth("1500px");
+        browserStuff.setHeight("1000px");
 
-        return new VerticalLayout(browser);
+        return new VerticalLayout(browserStuff);
     }
 
     /**
