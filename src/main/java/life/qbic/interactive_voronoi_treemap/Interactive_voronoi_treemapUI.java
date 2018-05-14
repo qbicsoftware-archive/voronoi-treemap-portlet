@@ -182,7 +182,8 @@ public class Interactive_voronoi_treemapUI extends UI {
             } catch (IOException e) {
                 LOG.error("Error while writing HTML file: " + e.getMessage());
                 Notification notification = new Notification("HTML Writer error",
-                        "Error while writing HTML file, is /tmp/ accessible? " + "Error: " + e.getMessage(),
+                        "Error while writing HTML file, is /tmp/ accessible? Your uploaded file may have gotten deleted already! Please upload it again \n"
+                                + "Error: " + e.getMessage(),
                         Notification.Type.ERROR_MESSAGE, true);
                 notification.show(Page.getCurrent());
             }
