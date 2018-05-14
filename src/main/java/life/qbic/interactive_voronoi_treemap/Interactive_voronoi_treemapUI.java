@@ -6,24 +6,18 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
+
+import com.vaadin.server.Page;
+import com.vaadin.ui.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.BrowserFrame;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.ProgressBar;
-import com.vaadin.ui.TwinColSelect;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Upload;
 import com.vaadin.ui.Upload.Receiver;
 import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.Upload.SucceededListener;
-import com.vaadin.ui.VerticalLayout;
 import life.qbic.voronoi.VoronoiTreemapStartup;
 
 @SuppressWarnings("serial")
@@ -52,10 +46,11 @@ public class Interactive_voronoi_treemapUI extends UI {
         configureComponents(left, main);
 
         left.addComponent(uploadFile);
+        select.setWidth("450px");
         left.addComponent(select);
         left.addComponent(new HorizontalLayout(button, load));
+        label_selection.setWidth("300px");
         left.addComponent(label_selection);
-        left.addComponent(new Label("1.1.5-SNAPSHOT"));
 
         main.addComponent(left);
         setContent(main);
@@ -66,7 +61,7 @@ public class Interactive_voronoi_treemapUI extends UI {
         LOG.info("Configuring components");
         uploadFile.addSucceededListener(receiver);
 
-        select.addValueChangeListener(event -> label_selection.setCaption("Selected: " + event.getProperty().getValue()));
+        select.addValueChangeListener(event -> label_selection.setValue("Selected: " + event.getProperty().getValue()));
         select.setRows(10);
 
         load.setVisible(false);
@@ -74,6 +69,11 @@ public class Interactive_voronoi_treemapUI extends UI {
 
         button.addClickListener((Button.ClickListener) event -> {
             load.setVisible(true);
+            Notification notification = new Notification("Starting algorithm",
+                    "Starting the Voronoi Treemap Algorithm, this may take some time!",
+                    Notification.Type.WARNING_MESSAGE,
+                    true);
+            notification.show(Page.getCurrent());
 
             createTreemap(() -> {
                 horizontalLayout.addComponent(createTreemapFrame());
@@ -180,7 +180,20 @@ public class Interactive_voronoi_treemapUI extends UI {
                 LOG.info("Starting Treemap generation algorithm in the portlet");
                 VoronoiTreemapStartup.createTreemap(input);
             } catch (IOException e) {
-                LOG.error("Creation of Treemap has failed! " + e.getMessage());
+                LOG.error("Error while writing HTML file: " + e.getMessage());
+                Notification notification = new Notification("HTML Writer error",
+                        "Error while writing HTML file, is /tmp/ accessible? " + "Error: " + e.getMessage(),
+                        Notification.Type.ERROR_MESSAGE, true);
+                notification.show(Page.getCurrent());
+            }
+
+            catch (NullPointerException e) {
+                LOG.error("Error while writing data - unsupported parameter passed!");
+                Notification notification = new Notification("Unsupported parameter",
+                        "Algorithm was passed an unsupported parameter, please examine your parameters! " + "Error: " + e.getMessage(),
+                        Notification.Type.ERROR_MESSAGE,
+                        true);
+                notification.show(Page.getCurrent());
             }
 
             UI.getCurrent().access(ready);
@@ -188,12 +201,6 @@ public class Interactive_voronoi_treemapUI extends UI {
         });
         t.start();
         UI.getCurrent().setPollInterval(200);
-
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            LOG.info("Unable to end algorithm computation thread: " + e.getMessage());
-        }
 
         LOG.info("Algorithm thread is alive: " + t.isAlive());
     }

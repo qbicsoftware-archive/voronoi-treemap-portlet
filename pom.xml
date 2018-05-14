@@ -163,7 +163,7 @@
 		<dependency>
 			<groupId>life.qbic</groupId>
 			<artifactId>voronoi-treemaps-cli</artifactId>
-			<version>1.0.8-SNAPSHOT</version>
+			<version>1.0.12-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
