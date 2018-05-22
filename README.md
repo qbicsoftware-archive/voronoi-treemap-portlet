@@ -22,6 +22,9 @@ ID
 X0h_dnE47dox0h_vs_dnE47noDox0hlog2FC
 X0h_dnE47dox0h_vs_RFPdox0hlog2FC 
 X0h_dnE47noDox0h_vs_RFPnoDox0hlog2FC
+X0h_RFPdox0h_vs_RFPnoDox0hlog2FC
+
+The screenshot above shows the described selection.
 3. Press 'Create Treemap'. The treemap will now be created and displayed in the browser. If treemap creation never finished it is likely that you did not include any real data. 
 
 Authors
