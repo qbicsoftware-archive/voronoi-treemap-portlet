@@ -1,28 +1,28 @@
-package life.qbic.interactive_voronoi_treemap;
+package life.qbic.portal.portlet;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStream;
-
+import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
 import com.vaadin.ui.*;
+import life.qbic.voronoi.VoronoiTreemapStartup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
-import com.vaadin.server.FileResource;
+import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.Upload.Receiver;
-import com.vaadin.ui.Upload.SucceededEvent;
-import com.vaadin.ui.Upload.SucceededListener;
-import life.qbic.voronoi.VoronoiTreemapStartup;
 
+import java.io.*;
+
+
+/**
+ * Entry point for portlet voronoi-treemap-portlet. This class derives from {@link QBiCPortletUI}, which is found in the {@code portal-utils-lib} library.
+ */
+@Theme("mytheme")
 @SuppressWarnings("serial")
-public class Interactive_voronoi_treemapUI extends UI {
-    private static final Logger LOG = LogManager.getLogger(Interactive_voronoi_treemapUI.class);
+@Widgetset("life.qbic.portlet.AppWidgetSet")
+public class VoronoiTreemapUI extends QBiCPortletUI {
+
+    private static final Logger LOG = LogManager.getLogger(VoronoiTreemapUI.class);
 
     TwinColSelect select = new TwinColSelect("Select column names in hierarchical order");
     Button button = new Button("Create Treemap");
@@ -37,13 +37,12 @@ public class Interactive_voronoi_treemapUI extends UI {
     FileReceiver receiver = new FileReceiver();
     Upload uploadFile = new Upload("Upload file to be mapped", receiver);
 
-
     @Override
-    protected void init(VaadinRequest request) {
+    protected Layout getPortletContent(final VaadinRequest request) {
         LOG.info("Initializing layout");
-        HorizontalLayout main = new HorizontalLayout();
+        HorizontalLayout mainHorizontalLayout = new HorizontalLayout();
         VerticalLayout left = new VerticalLayout();
-        configureComponents(left, main);
+        configureComponents(left, mainHorizontalLayout);
 
         left.addComponent(uploadFile);
         select.setWidth("450px");
@@ -52,9 +51,11 @@ public class Interactive_voronoi_treemapUI extends UI {
         label_selection.setWidth("300px");
         left.addComponent(label_selection);
 
-        main.addComponent(left);
-        setContent(main);
+        mainHorizontalLayout.addComponent(left);
+        setContent(mainHorizontalLayout);
         LOG.info("Finished layouting");
+
+        return mainHorizontalLayout;
     }
 
     private void configureComponents(VerticalLayout l, HorizontalLayout horizontalLayout) {
@@ -71,8 +72,7 @@ public class Interactive_voronoi_treemapUI extends UI {
             load.setVisible(true);
             Notification notification = new Notification("Starting algorithm",
                     "Starting the Voronoi Treemap Algorithm, this may take some time!",
-                    Notification.Type.WARNING_MESSAGE,
-                    true);
+                    Notification.Type.WARNING_MESSAGE, true);
             notification.show(Page.getCurrent());
 
             createTreemap(() -> {
@@ -85,7 +85,7 @@ public class Interactive_voronoi_treemapUI extends UI {
         LOG.info("Finished configuring components");
     }
 
-    class FileReceiver implements Receiver, SucceededListener {
+    class FileReceiver implements Upload.Receiver, Upload.SucceededListener {
         @Override
         public OutputStream receiveUpload(String filename, String mimeType) {
             try {
@@ -98,10 +98,10 @@ public class Interactive_voronoi_treemapUI extends UI {
             }
         }
 
-        public void uploadSucceeded(SucceededEvent event) {
+        public void uploadSucceeded(Upload.SucceededEvent event) {
             addColSelectItems(tempFile);
         }
-    };
+    }
 
     private void addColSelectItems(File file) {
         select.removeAllItems();
@@ -117,14 +117,12 @@ public class Interactive_voronoi_treemapUI extends UI {
                 select.addItem(c);
             }
         } catch (IOException e) {
-            LOG.info("Parsing the columns of the uploaded file has failed! " + e.getMessage());
+            LOG.error("Parsing the columns of the uploaded file has failed! " + e.getMessage());
         }
     }
 
     private VerticalLayout createTreemapFrame() {
         LOG.info("Displaying treemap from: " + VoronoiTreemapStartup.getOutputFilePath());
-        //File testFile = new File(Interactive_voronoi_treemapUI.class.getClassLoader().getResource("voroTreemap123071972158065013.html").getFile());
-        //BrowserFrame browserStuff = new BrowserFrame("blabla", new FileResource(testFile));
         BrowserFrame browser = new BrowserFrame("Voronoi Treemap", new FileResource(new File(VoronoiTreemapStartup.getOutputFilePath())));
 
         browser.setWidth("1500px");
@@ -143,7 +141,6 @@ public class Interactive_voronoi_treemapUI extends UI {
      * @param ready
      */
     public void createTreemap(final Runnable ready) {
-        LOG.info("Starting algorithm thread");
         Thread t = new Thread(() -> {
             LOG.info("Creating treemap");
             LOG.info("Setting up treemap algorithm options");
@@ -192,8 +189,7 @@ public class Interactive_voronoi_treemapUI extends UI {
                 LOG.error("Error while writing data - unsupported parameter passed!");
                 Notification notification = new Notification("Unsupported parameter",
                         "Algorithm was passed an unsupported parameter, please examine your parameters! " + "Error: " + e.getMessage(),
-                        Notification.Type.ERROR_MESSAGE,
-                        true);
+                        Notification.Type.ERROR_MESSAGE, true);
                 notification.show(Page.getCurrent());
             }
 
@@ -202,8 +198,6 @@ public class Interactive_voronoi_treemapUI extends UI {
         });
         t.start();
         UI.getCurrent().setPollInterval(200);
-
-        LOG.info("Algorithm thread is alive: " + t.isAlive());
     }
 
 }
