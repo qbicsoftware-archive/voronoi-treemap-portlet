@@ -5,7 +5,7 @@
 Visualisation of complex hierarchical data is often times cumbersome. 
 Voronoi treemaps enable the user to quickly identify the contribution of specific datapoints to the whole dataset.
 The hierarchical approach allows for easy filtering of the datasets and only the current level of interest is displayed.
-![voronoi_2](https://user-images.githubusercontent.com/21954664/40873396-a6e92810-665f-11e8-8417-48f72a96a39c.png)
+![voronoi_2](https://user-images.githubusercontent.com/21954664/40873417-f0e4cba4-665f-11e8-8e19-4c7e0773ed81.png)
 
 Quick Setup
 =====
