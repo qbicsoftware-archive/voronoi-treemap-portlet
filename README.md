@@ -1,6 +1,6 @@
 # Voronoi Treemap Portlet
 
-[![Build Status](https://travis-ci.org/qbicsoftware/voronoi-treemap-portlet.svg?branch=master)](https://travis-ci.org/qbicsoftware/voronoi-treemap-portlet)[![Code Coverage]( https://codecov.io/gh/qbicsoftware/voronoi-treemap-portlet/branch/master/graph/badge.svg)](https://codecov.io/gh/qbicsoftware/voronoi-treemap-portlet)
+[![Build Status](https://travis-ci.org/qbicsoftware/voronoi-treemap-portlet.svg?branch=development)](https://travis-ci.org/qbicsoftware/voronoi-treemap-portlet)[![Code Coverage]( https://codecov.io/gh/qbicsoftware/voronoi-treemap-portlet/branch/development/graph/badge.svg)](https://codecov.io/gh/qbicsoftware/voronoi-treemap-portlet)
 
 Visualisation of complex hierarchical data is often times cumbersome. 
 Voronoi treemaps enable the user to quickly identify the contribution of specific datapoints to the whole dataset.

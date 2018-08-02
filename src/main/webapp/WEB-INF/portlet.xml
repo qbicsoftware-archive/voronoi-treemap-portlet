@@ -8,7 +8,7 @@
 
 	<portlet>
 		<description>Portlet which creates Voronoi Treemaps from tsv/csv files and displays them.</description>
-		<portlet-name>voronoi-treemap-portlet</portlet-name>
+		<portlet-name>${project.artifactId}</portlet-name>
 		<display-name>Voronoi Treemap Portlet</display-name>
 
 		<portlet-class>com.vaadin.server.VaadinPortlet</portlet-class>
